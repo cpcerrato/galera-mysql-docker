@@ -1,0 +1,15 @@
+FROM ubuntu:14.04
+ENV DEBIAN_FRONTEND noninteractive
+RUN echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/99norecommends
+RUN echo 'APT::Install-Suggests "false";' >> /etc/apt/apt.conf.d/99norecommends
+RUN echo 'deb http://debian.furanet.com/comvive-repo/ wheezy main' >> /etc/apt/sources.list.d/comvive-repo.list
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv BC19DDBA
+RUN echo 'deb http://releases.galeracluster.com/ubuntu trusty main' >> /etc/apt/sources.list.d/galera.list
+RUN apt-get update -y --ignore-missing
+RUN apt-get upgrade -y
+RUN apt-get install -y --force-yes apt-utils python-software-properties rsync lsof procps vim aptitude galera-3 galera-arbitrator-3 mysql-wsrep-5.6
+RUN apt-get autoremove -y
+#RUN rm /etc/mysql/my.cnf
+#RUN ln -sf /config/my.cnf /etc/mysql/my.cnf
+
+EXPOSE 3306 4444 4567 4568
